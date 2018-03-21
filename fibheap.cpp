@@ -21,3 +21,32 @@ template <typename K, typename V>
 FibonacciHeap<K,V>::~FibonacciHeap() {
 
 }
+
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::isEmpty() {
+    return rootlist == NULL;
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::insert(K key, V value) {
+    Node* node = new Node;
+
+    //Initialize the node values
+    node->prev = node;
+    node->next = node;
+    node->child = NULL;
+    node->parent = NULL;
+    node->key = key;
+    node->value = value;
+    node->degree = 0;
+    node->marked = false;
+    
+    //Meld the node into the rootlist
+    meldNode(node);
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::meldNode(Node* node) {
+}
+
+template class FibonacciHeap<int, char>;

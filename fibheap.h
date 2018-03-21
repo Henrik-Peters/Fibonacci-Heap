@@ -32,10 +32,15 @@ class FibonacciHeap final {
 
         unsigned int nodeCount;
 
+        void meldNode(Node* node);
+
     public:
         FibonacciHeap();
         FibonacciHeap(const FibonacciHeap<K,V>& orig);
         ~FibonacciHeap();
+
+        bool isEmpty();
+        void insert(K key, V value);
 
 };
 
