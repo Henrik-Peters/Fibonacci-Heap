@@ -1,5 +1,5 @@
-# Prerequisites
-*.d
+# Binary file
+fibheap
 
 # Compiled Object files
 *.slo
