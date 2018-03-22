@@ -79,6 +79,11 @@ void FibonacciHeap<K,V>::meldNode(Node* node) {
         innerNext->prev = innerPrev;
         innerPrev->next = innerNext;
 
+        //Update the min pointer
+        if (node->key < min->key) {
+            min = node;
+        }
+
         nodeCount++;
     }
 }
