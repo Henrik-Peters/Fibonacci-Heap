@@ -123,7 +123,23 @@ V FibonacciHeap<K,V>::extractMin() {
         //Save values of the min node
         V minValue = min->value;
 
-        //TODO: Repair the heap
+        //Remove the min node from the list
+        min->next->prev = min->prev;
+        min->prev->next = min->next;
+
+        //Update the rootlist pointer
+        if (rootlist == min) {
+            rootlist = (min->next == min)
+                ? NULL
+                : min->next;
+        }
+
+        delete min;
+        min = NULL; //can be omitted for better peformance
+        nodeCount--;
+
+        //TODO: Add all childs of the minimum to the rootlist
+        //TODO: Link rootlist nodes with the same degree together
 
         return minValue;
     }
