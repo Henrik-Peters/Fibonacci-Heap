@@ -41,6 +41,7 @@ class FibonacciHeap final {
 
         bool isEmpty();
         void insert(K key, V value);
+        void meld(FibonacciHeap<K,V>* other);
 
 };
 

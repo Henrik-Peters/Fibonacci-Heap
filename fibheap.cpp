@@ -46,6 +46,22 @@ void FibonacciHeap<K,V>::insert(K key, V value) {
 }
 
 template <typename K, typename V>
+void FibonacciHeap<K,V>::meld(FibonacciHeap<K,V>* other) {
+    //There is no change when merging with an empty rootlist
+    if (rootlist != NULL && other != NULL) {
+
+        //Meld with the root node of the other rootlist
+        meldNode(other->rootlist);
+
+        //Reset the secound rootlist to prevent unexpected side-effects
+        //This may be omitting for better performance
+        other->rootlist = NULL;
+        other->min = NULL;
+        other->nodeCount = 0;
+    }
+}
+
+template <typename K, typename V>
 void FibonacciHeap<K,V>::meldNode(Node* node) {
     //There is no change when merging with an empty node
     if (rootlist == NULL) {
