@@ -104,4 +104,29 @@ void FibonacciHeap<K,V>::meldNode(Node* node) {
     }
 }
 
+template <typename K, typename V>
+V FibonacciHeap<K,V>::getMin() {
+    if (min == NULL) {
+        //Empty rootlist
+        return (V)0;
+    } else {
+        return min->value;
+    }
+}
+
+template <typename K, typename V>
+V FibonacciHeap<K,V>::extractMin() {
+    if (min == NULL) {
+        //Empty rootlist
+        return (V)0;
+    } else {
+        //Save values of the min node
+        V minValue = min->value;
+
+        //TODO: Repair the heap
+
+        return minValue;
+    }
+}
+
 template class FibonacciHeap<int, char>;

@@ -43,6 +43,9 @@ class FibonacciHeap final {
         void insert(K key, V value);
         void meld(FibonacciHeap<K,V>* other);
 
+        V getMin();
+        V extractMin();
+
 };
 
 #endif /* FIBHEAP_H */
