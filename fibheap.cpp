@@ -169,4 +169,58 @@ void FibonacciHeap<K,V>::consolidate() {
     //TODO: Link rootlist nodes with the same degree
 }
 
+#ifdef DEBUG
+template <typename K, typename V>
+void FibonacciHeap<K,V>::dump(string dumpName) {
+    system("mkdir -p dump");
+    ofstream graphFile;
+    graphFile.open("dump/" + dumpName + ".gv");
+
+    graphFile << "digraph G {" << endl;
+    graphFile << "node [style=filled];" << endl;
+    graphFile << "graph [pad=\"0.1\", nodesep=\"1\", ranksep=\"1.5\"];" << endl;
+
+    int maxDepth = 0;
+    auto nodeList = new list<pair<Node*,int>>();
+
+    //Add all nodes to the list
+    dumpNode(nodeList, rootlist, 0);
+
+    //Find the max depth
+    for (auto curPair : *nodeList) {
+        if (curPair.second > maxDepth) {
+            maxDepth = curPair.second;
+        }
+    }
+
+    //TODO: Add nodes to the graphFile
+    graphFile << "}" << endl;
+
+    delete nodeList;
+    graphFile.close();
+
+    string graphizCall = "dot -Tpng dump/" + dumpName + ".gv -o dump/" + dumpName + ".png";
+    string openCall = "xdg-open dump/" + dumpName + ".png";
+
+    system(graphizCall.c_str());
+    system("cd dump && rm *.gv");
+    system(openCall.c_str());
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::dumpNode(list<pair<Node*,int>>* nodeList, Node* node, int depth) {
+    Node* curNode = node;
+
+    do {
+        nodeList->push_back(make_pair(curNode, depth));
+
+        if (curNode->child != NULL) {
+            dumpNode(nodeList, curNode->child, depth + 1);
+        }
+
+        curNode = curNode->next;
+    } while (curNode != node);
+}
+#endif
+
 template class FibonacciHeap<int, char>;

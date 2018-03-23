@@ -66,7 +66,13 @@ void Test::run() {
 int main() {
     Test testSuite[] = {
         {"Test1", []() {
-            //FibHeap* h = new FibHeap();
+            FibHeap* h = new FibHeap();
+
+            h->insert(5, 'A');
+            h->insert(6, 'B');
+            h->insert(7, 'C');
+            h->dump();
+
             TestPassed;
         }},
         {"Test2", []() {

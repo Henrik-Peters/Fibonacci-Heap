@@ -12,7 +12,10 @@
 #endif
 
 #ifdef DEBUG
+#include <assert.h>
 #include <fstream>
+#include <list>
+#include <utility>
 #endif
 
 using namespace std;
@@ -47,6 +50,11 @@ class FibonacciHeap final {
 
         V getMin();
         V extractMin();
+
+        #ifdef DEBUG
+        void dump(string dumpName = "dump");
+        void dumpNode(list<pair<Node*,int>>* nodeList, Node* node, int depth);
+        #endif
 
 };
 
