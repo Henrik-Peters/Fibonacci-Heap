@@ -1,6 +1,12 @@
 # Binary file
 fibheap
 
+# Dump files
+dump
+
+# Hidden files
+.*
+
 # Compiled Object files
 *.slo
 *.lo
@@ -15,10 +21,6 @@ fibheap
 *.so
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
 
 # Compiled Static libraries
 *.lai
