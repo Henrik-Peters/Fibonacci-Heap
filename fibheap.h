@@ -4,6 +4,7 @@
 // See LICENSE file in the project root for full license information.
 // ---------------------------------------------------------------------
 #include <iostream>
+#include <cmath>
 #include <cstdlib>
 
 #ifndef DEBUG
@@ -33,6 +34,7 @@ class FibonacciHeap final {
         unsigned int nodeCount;
 
         void meldNode(Node* node);
+        void consolidate();
 
     public:
         FibonacciHeap();

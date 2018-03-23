@@ -122,6 +122,7 @@ V FibonacciHeap<K,V>::extractMin() {
     } else {
         //Save values of the min node
         V minValue = min->value;
+        Node* minChild = min->child;
 
         //Remove the min node from the list
         min->next->prev = min->prev;
@@ -138,11 +139,34 @@ V FibonacciHeap<K,V>::extractMin() {
         min = NULL; //can be omitted for better peformance
         nodeCount--;
 
-        //TODO: Add all childs of the minimum to the rootlist
-        //TODO: Link rootlist nodes with the same degree together
+        if (minChild != NULL) {
+            //Add all childs of the minimum to the rootlist
+            Node* curNode = minChild;
 
+            do {
+                curNode->marked = false;
+                curNode->parent = NULL;
+                curNode = curNode->next;
+
+                meldNode(curNode);
+
+            } while (curNode != minChild);
+        }
+
+        consolidate();
         return minValue;
     }
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::consolidate() {
+    //Empty heap or single node
+    if (nodeCount <= 1) return;
+
+    unsigned int maxTrees = 2 * log2(nodeCount);
+    Node* trees[maxTrees] = {NULL};
+
+    //TODO: Link rootlist nodes with the same degree
 }
 
 template class FibonacciHeap<int, char>;
