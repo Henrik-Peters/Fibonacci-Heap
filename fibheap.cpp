@@ -136,7 +136,6 @@ V FibonacciHeap<K,V>::extractMin() {
         }
 
         delete min;
-        min = NULL; //can be omitted for better peformance
         nodeCount--;
 
         if (minChild != NULL) {
@@ -146,9 +145,19 @@ V FibonacciHeap<K,V>::extractMin() {
             do {
                 curNode->marked = false;
                 curNode->parent = NULL;
-                curNode = curNode->next;
 
-                meldNode(curNode);
+                //In order not to break the iteration during node prepanding
+                //save the current node and move the iteration to the next node
+                Node* node = curNode;
+                curNode = curNode->next;
+                
+                //Prepend node to the rootlist
+                node->next = rootlist;
+                node->prev = rootlist->prev;
+
+                rootlist->prev->next = node;
+                rootlist->prev = node;
+                rootlist = node;
 
             } while (curNode != minChild);
         }
