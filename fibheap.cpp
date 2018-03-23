@@ -169,6 +169,45 @@ void FibonacciHeap<K,V>::consolidate() {
     //TODO: Link rootlist nodes with the same degree
 }
 
+template <typename K, typename V>
+typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::link(Node* a, Node* b) {
+    #ifdef DEBUG
+    //When linking two nodes they have the same degree
+    assert (a->degree == b->degree);
+    #endif
+
+    //Make sure that a is the smaller node
+    if (a->key > b->key) {
+        Node* swap = a;
+        a = b;
+        b = swap;
+    }
+
+    //Pointers to b can be ignored because they will be overwritten
+    //by the rootlist reconstruction during consolidation
+    a->degree++;
+    a->marked = false;
+
+    //Move b to the childlist of a
+    b->parent = a;
+
+    if (a->child == NULL) {
+        b->prev = b->next = b;
+        a->child = b;
+
+    } else {
+        //Set b between the child of a and the last node
+        b->prev = a->child->prev;
+        b->next = a->child;
+
+        //Update the next pointer of the last node
+        b->prev->next = b;
+        a->child->prev = b;
+    }
+
+    return a;
+}
+
 #ifdef DEBUG
 template <typename K, typename V>
 void FibonacciHeap<K,V>::dump(string dumpName) {

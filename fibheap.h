@@ -38,6 +38,7 @@ class FibonacciHeap final {
 
         void meldNode(Node* node);
         void consolidate();
+        Node* link(Node* a, Node* b);
 
     public:
         FibonacciHeap();
