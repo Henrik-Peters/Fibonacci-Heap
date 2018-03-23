@@ -193,7 +193,57 @@ void FibonacciHeap<K,V>::dump(string dumpName) {
         }
     }
 
-    //TODO: Add nodes to the graphFile
+    //Add the rank headers
+    for (int i = 0; i <= maxDepth; i++) {
+        graphFile << "{rank=same; d" << i << "[style=invis, shape=point]; ";
+
+        for (auto curPair : *nodeList) {
+            if (curPair.second == i) {
+                graphFile << curPair.first->key << ";";
+            }
+        }
+
+        graphFile << "}" << endl;
+    }
+
+    //Dump the nodes
+    for (auto curPair : *nodeList) {
+        Node* node = curPair.first;
+
+        string prevColor = "0.650 0.700 0.700"; //blue
+        string nextColor = "0.348 0.839 0.839"; //green
+        string parentColor = "#FF9900"; //red
+        string childColor = "#000000"; //black
+
+        graphFile << node->key << " -> " << node->prev->key << " [color=\"" << prevColor << "\"];" << endl;
+        graphFile << node->key << " -> " << node->next->key << " [color=\"" << nextColor << "\"];" << endl;
+
+        if (node->parent != NULL) {
+            graphFile << node->key << " -> " << node->parent->key << " [color=\"" << parentColor << "\"];" << endl;
+        }
+
+        if (node->child != NULL) {
+            graphFile << node->key << " -> " << node->child->key << " [color=\"" << childColor << "\"];" << endl;
+        }
+
+        if (node == min) {
+            graphFile << node->key << " [shape=record, fillcolor=\"0.650 0.200 1.000\", style=filled,";
+        } else {
+            graphFile << node->key << " [shape=record,";
+        }
+
+        graphFile << "label=\"{{" << node->key << "|" << node->value << "}|" << node->degree << "}\"];" << endl;
+    }
+
+    //Add the rank footer
+    graphFile << "edge[style=invis];" << endl;
+    graphFile << "d0";
+
+    for (int i = 1; i <= maxDepth; i++) {
+        graphFile << "->d" << i;
+    }
+
+    graphFile << ";" << endl;
     graphFile << "}" << endl;
 
     delete nodeList;
