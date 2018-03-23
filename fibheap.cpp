@@ -166,7 +166,46 @@ void FibonacciHeap<K,V>::consolidate() {
     unsigned int maxTrees = 2 * log2(nodeCount);
     Node* trees[maxTrees] = {NULL};
 
-    //TODO: Link rootlist nodes with the same degree
+    Node* curNode = rootlist;
+
+    //Link rootlist nodes with the same degree
+    do {
+        Node* node = curNode;
+        curNode = curNode->next;
+
+        if (trees[node->degree] != NULL) {
+            node = link(trees[node->degree], node);
+        }
+
+        trees[node->degree] = node;
+        
+    } while (curNode != rootlist);
+
+    //Create the new rootlist
+    rootlist = NULL;
+
+    for (unsigned int i = 0; i < maxTrees; i++) {
+        if (trees[i] != NULL) {
+
+            //First node for the new rootlist
+            if (rootlist == NULL) {
+                rootlist = min = trees[i];
+                rootlist->prev = rootlist->next = rootlist;
+            }
+
+            //Prepend the node to the rootlist
+            trees[i]->next = rootlist;
+            trees[i]->prev = rootlist->prev;
+
+            rootlist->prev = trees[i];
+            rootlist = trees[i];
+
+            //Update the minimum pointer
+            if (trees[i]->key < min->key) {
+                min = trees[i];
+            }
+        }
+    }
 }
 
 template <typename K, typename V>
