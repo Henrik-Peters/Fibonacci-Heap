@@ -183,7 +183,10 @@ void FibonacciHeap<K,V>::consolidate() {
         curNode = curNode->next;
 
         if (trees[node->degree] != NULL) {
+            int prevDegree = node->degree;
             node = link(trees[node->degree], node);
+
+            trees[prevDegree] = NULL;
         }
 
         trees[node->degree] = node;
