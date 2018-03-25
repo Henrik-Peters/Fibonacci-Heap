@@ -43,6 +43,7 @@ class FibonacciHeap final {
 
         inline void appendNode(Node* node);
         Node* find(Node* list, V value);
+        void cut(Node* node);
 
     public:
         FibonacciHeap();

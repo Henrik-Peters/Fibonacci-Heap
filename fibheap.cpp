@@ -277,11 +277,39 @@ void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
             return;
         }
 
-        //TODO: Repair the heap order
+        //Repair the heap order
+
+        do {
+            //Cascading cuts
+            Node* oldParent = node->parent;
+            cut(node);
+            node = oldParent;
+
+        } while (node->marked && node->parent != NULL);
+
+        if (node->parent != NULL) {
+            node->marked = true;
+        }
 
         #ifdef DEBUG
         assert (invariant());
         #endif
+    }
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::cut(Node* node) {
+    if (node->parent != NULL) {
+        //Move node to the rootlist
+        node->parent->degree--;
+        node->parent = NULL;
+
+        //Remove node from its list
+        node->next->prev = node->prev;
+        node->prev->next = node->next;
+
+        //Insert node into the rootlist
+        appendNode(node);
     }
 }
 
