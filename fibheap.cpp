@@ -78,18 +78,6 @@ void FibonacciHeap<K,V>::meldNode(Node* node) {
         nodeCount = 1;
         
     } else if (node != NULL) {
-        
-        //Make sure the smaller node is in the current rootlist
-        if (rootlist->key > node->key) {
-            K swapKey = rootlist->key;
-            V swapValue = rootlist->value;
-
-            rootlist->key = node->key;
-            rootlist->value = node->value;
-
-            node->key = swapKey;
-            node->value = swapValue;
-        }
 
         //Save the intermediate nodes before concatenation
         Node* innerNext = rootlist->next;
