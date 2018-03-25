@@ -256,6 +256,59 @@ typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::link(Node* a, Node* b) {
     return a;
 }
 
+template <typename K, typename V>
+void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
+    Node* node = find(rootlist, value);
+
+    //Check that the node exists and the new key is smaller
+    if (node && newKey < node->key) {
+        node->key = newKey;
+
+        //Update the min pointer
+        if (node->key < min->key) {
+            min = node;
+        }
+
+        //Done when the node is in the rootlist or the parent still has a lower key
+        if (node->parent == NULL || node->parent->key < newKey) {
+            #ifdef DEBUG
+            assert (invariant());
+            #endif
+            return;
+        }
+
+        //TODO: Repair the heap order
+
+        #ifdef DEBUG
+        assert (invariant());
+        #endif
+    }
+}
+
+template <typename K, typename V>
+typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::find(Node* list, V value) {
+    Node* curNode = list;
+
+    do {
+        if (curNode->value == value) {
+            return curNode;
+        }
+
+        //Recursive search for the child lists
+        if (curNode->child != NULL) {
+            Node* childSearch = find(curNode->child, value);
+
+            if (childSearch) {
+                return childSearch;
+            }
+        }
+
+        curNode = curNode->next;
+    } while (curNode != list);
+
+    return NULL;
+}
+
 #ifdef DEBUG
 template <typename K, typename V>
 bool FibonacciHeap<K,V>::invariant() {

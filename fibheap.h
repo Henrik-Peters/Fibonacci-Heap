@@ -42,6 +42,7 @@ class FibonacciHeap final {
         Node* link(Node* a, Node* b);
 
         inline void appendNode(Node* node);
+        Node* find(Node* list, V value);
 
     public:
         FibonacciHeap();
@@ -54,6 +55,8 @@ class FibonacciHeap final {
 
         V getMin();
         V extractMin();
+
+        void decreaseKey(V value, K newKey);
 
         #ifdef DEBUG
         bool invariant();
