@@ -43,6 +43,10 @@ void FibonacciHeap<K,V>::insert(K key, V value) {
     
     //Meld the node into the rootlist
     meldNode(node);
+
+    #ifdef DEBUG
+    assert (invariant());
+    #endif
 }
 
 template <typename K, typename V>
@@ -52,6 +56,10 @@ void FibonacciHeap<K,V>::meld(FibonacciHeap<K,V>* other) {
 
         //Meld with the root node of the other rootlist
         meldNode(other->rootlist);
+
+        #ifdef DEBUG
+        assert (invariant());
+        #endif
 
         //Reset the secound rootlist to prevent unexpected side-effects
         //This may be omitting for better performance
@@ -219,6 +227,11 @@ void FibonacciHeap<K,V>::consolidate() {
             }
         }
     }
+
+    #ifdef DEBUG
+    assert (invariant());
+    assert (normalized(rootlist));
+    #endif
 }
 
 template <typename K, typename V>
@@ -261,6 +274,130 @@ typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::link(Node* a, Node* b) {
 }
 
 #ifdef DEBUG
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::invariant() {
+    if (isEmpty()) {
+        return rootlist == NULL && min == NULL && nodeCount == 0;
+
+    } else {
+        bool invNodeCount = (invariantNodeCount(rootlist) == nodeCount);
+        bool invNonEmpty = rootlist != NULL && min != NULL && nodeCount > 0;
+
+        //Check invariantNode for all nodes
+        return invNodeCount && invNonEmpty && invariantAllNodes(rootlist);
+    }
+}
+
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::invariantAllNodes(Node* node) {
+    Node* curNode = node;
+    bool invNodes = true;
+
+    do {
+        invNodes &= invariantNode(curNode);
+
+        //Recursive descent for trees
+        if (curNode->child != NULL) {
+            invNodes &= invariantAllNodes(curNode->child);
+        }
+
+        curNode = curNode->next;
+    } while (curNode != node);
+
+    return invNodes;
+}
+
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::invariantNode(Node* node) {
+    //All nodes below have a higher order
+    bool heapOrder = (node->child == NULL) || invariantHeapOrder(node->child, node->key);
+
+    //The min pointer has the lowest key
+    bool minOrder = (node == min) || (min->key < node->key);
+
+    //Chaining of the list
+    bool prevChain = node->next->prev == node;
+    bool nextChain = node->prev->next == node;
+
+    //Chaining of the tree
+    bool childChain = node->child == NULL || node->child->parent == node;
+    bool childListChain = true;
+
+    if (node->child != NULL) {
+        Node* curNode = node->child;
+
+        do {
+            childListChain &= (curNode->parent == node);
+            curNode = curNode->next;
+        } while (curNode != node->child);
+    }
+    
+    return heapOrder && minOrder && prevChain &&
+           nextChain && childChain && childListChain;
+}
+
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::invariantHeapOrder(Node* node, K key) {
+    Node* curNode = node;
+    bool heapOrder = true;
+
+    do {
+
+        if (curNode->key < key) {
+            heapOrder = false;
+        }
+
+        if (curNode->child != NULL) {
+            heapOrder &= invariantHeapOrder(curNode->child, key);
+        }
+
+        curNode = curNode->next;
+    } while (curNode != node);
+
+    return heapOrder;
+}
+
+template <typename K, typename V>
+unsigned int FibonacciHeap<K,V>::invariantNodeCount(Node* node) {
+    unsigned int nodeSum = 0;
+    Node* curNode = node;
+
+    do {
+        nodeSum++;
+
+        if (curNode->child != NULL) {
+            nodeSum += invariantNodeCount(curNode->child);
+        }
+
+        curNode = curNode->next;
+    } while (curNode != node);
+
+    return nodeSum;
+}
+
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::normalized(Node* node) {
+    map<unsigned int,unsigned int> nodeMap;
+    bool uniqueDegrees = true;
+    Node* curNode = node;
+
+    do {
+        nodeMap[curNode->degree]++;
+
+        if (nodeMap[curNode->degree] > 1) {
+            uniqueDegrees = false;
+        }
+
+        if (curNode->child != NULL) {
+            uniqueDegrees &= normalized(curNode->child);
+        }
+
+        curNode = curNode->next;
+    } while (curNode != node);
+
+    return uniqueDegrees;
+}
+
 template <typename K, typename V>
 void FibonacciHeap<K,V>::dump(string dumpName) {
     system("mkdir -p dump");

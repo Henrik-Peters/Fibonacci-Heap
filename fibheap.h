@@ -14,8 +14,9 @@
 #ifdef DEBUG
 #include <assert.h>
 #include <fstream>
-#include <list>
 #include <utility>
+#include <list>
+#include <map>
 #endif
 
 using namespace std;
@@ -30,8 +31,8 @@ class FibonacciHeap final {
             Node *prev, *next, *child, *parent;
             K key;
             V value;
-            int degree;
             bool marked;
+            unsigned int degree;
         } *rootlist, *min;
 
         unsigned int nodeCount;
@@ -53,6 +54,13 @@ class FibonacciHeap final {
         V extractMin();
 
         #ifdef DEBUG
+        bool invariant();
+        bool invariantAllNodes(Node* node);
+        bool invariantNode(Node* node);
+        bool invariantHeapOrder(Node* node, K key);
+        unsigned int invariantNodeCount(Node* node);
+
+        bool normalized(Node* node);
         void dump(string dumpName = "dump");
         void dumpNode(list<pair<Node*,int>>* nodeList, Node* node, int depth);
         #endif
