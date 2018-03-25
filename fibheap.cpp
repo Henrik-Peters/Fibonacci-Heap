@@ -79,17 +79,8 @@ void FibonacciHeap<K,V>::meldNode(Node* node) {
         
     } else if (node != NULL) {
 
-        //Save the intermediate nodes before concatenation
-        Node* innerNext = rootlist->next;
-        Node* innerPrev = node->prev;
-
-        //Concatenate the rootlist nodes
-        rootlist->next = node;
-        node->prev = rootlist;
-
-        //Concatenate intermediate nodes
-        innerNext->prev = innerPrev;
-        innerPrev->next = innerNext;
+        //Append the node to the rootlist
+        appendNode(node);
 
         //Update the min pointer
         if (node->key < min->key) {
@@ -98,6 +89,20 @@ void FibonacciHeap<K,V>::meldNode(Node* node) {
 
         nodeCount++;
     }
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::appendNode(Node* node) {
+    //Save the pointer to the old last node
+    Node* lastNode = rootlist->prev;
+
+    //Set the pointers to the new node
+    lastNode->next = node;
+    rootlist->prev = node;
+
+    //Set the pointers from the new node
+    node->prev = lastNode;
+    node->next = rootlist;
 }
 
 template <typename K, typename V>
@@ -146,14 +151,9 @@ V FibonacciHeap<K,V>::extractMin() {
                 //save the current node and move the iteration to the next node
                 Node* node = curNode;
                 curNode = curNode->next;
-                
-                //Prepend node to the rootlist
-                node->next = rootlist;
-                node->prev = rootlist->prev;
 
-                rootlist->prev->next = node;
-                rootlist->prev = node;
-                rootlist = node;
+                //Append the node to the rootlist
+                appendNode(node);
 
             } while (curNode != minChild);
         }
@@ -201,13 +201,8 @@ void FibonacciHeap<K,V>::consolidate() {
                 rootlist->prev = rootlist->next = rootlist;
             }
 
-            //Prepend the node to the rootlist
-            trees[i]->next = rootlist;
-            trees[i]->prev = rootlist->prev;
-
-            rootlist->prev->next = trees[i];
-            rootlist->prev = trees[i];
-            rootlist = trees[i];
+            //Append the node to the rootlist
+            appendNode(trees[i]);
 
             //Update the minimum pointer
             if (trees[i]->key < min->key) {

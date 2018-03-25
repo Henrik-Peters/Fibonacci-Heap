@@ -41,6 +41,8 @@ class FibonacciHeap final {
         void consolidate();
         Node* link(Node* a, Node* b);
 
+        inline void appendNode(Node* node);
+
     public:
         FibonacciHeap();
         FibonacciHeap(const FibonacciHeap<K,V>& orig);
