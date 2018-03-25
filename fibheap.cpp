@@ -206,6 +206,7 @@ void FibonacciHeap<K,V>::consolidate() {
             trees[i]->next = rootlist;
             trees[i]->prev = rootlist->prev;
 
+            rootlist->prev->next = trees[i];
             rootlist->prev = trees[i];
             rootlist = trees[i];
 
