@@ -65,17 +65,67 @@ void Test::run() {
 
 int main() {
     Test testSuite[] = {
-        {"Test1", []() {
+        {"Single element insert and remove", []() {
             FibHeap* h = new FibHeap();
 
-            h->insert(5, 'A');
-            h->insert(6, 'B');
-            h->insert(7, 'C');
-            h->dump();
+            h->insert(1, 'A');
+            AssertFalse(h->isEmpty());
 
+            char min = h->extractMin();
+
+            AssertEquals('A', min);
+            AssertTrue(h->isEmpty());
+            delete h;
             TestPassed;
         }},
-        {"Test2", []() {
+        {"Tree creation with 1 child", []() {
+            FibHeap* h = new FibHeap();
+            
+            h->insert(2, 'B');
+            h->insert(3, 'C');
+            h->insert(1, 'A');
+            h->insert(4, 'D');
+
+            char min = h->extractMin();
+
+            AssertEquals('A', min);
+            delete h;
+            TestPassed;
+        }},
+        {"Removing node with 1 child", []() {
+            FibHeap* h = new FibHeap();
+            
+            h->insert(2, 'B');
+            h->insert(3, 'C');
+            h->insert(1, 'A');
+            h->insert(4, 'D');
+
+            char min1 = h->extractMin();
+            char min2 = h->extractMin();
+
+            AssertEquals('A', min1);
+            AssertEquals('B', min2);
+            delete h;
+            TestPassed;
+        }},
+        {"Test", []() {
+            FibHeap* h = new FibHeap();
+            
+            h->insert(2, 'B');
+            h->insert(3, 'C');
+            h->insert(1, 'A');
+            h->insert(4, 'D');
+            h->insert(6, 'F');
+            h->insert(5, 'E');
+
+            char min1 = h->extractMin();
+
+            h->dump();
+
+            //char min1 = h->extractMin();
+            //char min2 = h->extractMin();
+
+            delete h;
             TestPassed;
         }}
     };
