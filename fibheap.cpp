@@ -348,12 +348,12 @@ bool FibonacciHeap<K,V>::invariant() {
         bool invNonEmpty = rootlist != NULL && min != NULL && nodeCount > 0;
 
         //Check invariantNode for all nodes
-        return invNodeCount && invNonEmpty && invariantAllNodes(rootlist);
+        return invNodeCount && invNonEmpty && invariantList(rootlist);
     }
 }
 
 template <typename K, typename V>
-bool FibonacciHeap<K,V>::invariantAllNodes(Node* node) {
+bool FibonacciHeap<K,V>::invariantList(Node* node) {
     Node* curNode = node;
     bool invNodes = true;
 
@@ -362,7 +362,7 @@ bool FibonacciHeap<K,V>::invariantAllNodes(Node* node) {
 
         //Recursive descent for trees
         if (curNode->child != NULL) {
-            invNodes &= invariantAllNodes(curNode->child);
+            invNodes &= invariantList(curNode->child);
         }
 
         curNode = curNode->next;

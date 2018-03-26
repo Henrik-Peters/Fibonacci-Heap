@@ -61,7 +61,7 @@ class FibonacciHeap final {
 
         #ifdef DEBUG
         bool invariant();
-        bool invariantAllNodes(Node* node);
+        bool invariantList(Node* node);
         bool invariantNode(Node* node);
         bool invariantHeapOrder(Node* node, K key);
         unsigned int invariantNodeCount(Node* node);
