@@ -63,6 +63,7 @@ class FibonacciHeap final {
         bool invariant();
         bool invariantList(Node* node);
         bool invariantNode(Node* node);
+        bool invariantDegree(Node* node);
         bool invariantHeapOrder(Node* node, K key);
         unsigned int invariantNodeCount(Node* node);
 

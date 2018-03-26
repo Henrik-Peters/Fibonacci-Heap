@@ -375,6 +375,7 @@ template <typename K, typename V>
 bool FibonacciHeap<K,V>::invariantNode(Node* node) {
     //All nodes below have a higher order
     bool heapOrder = (node->child == NULL) || invariantHeapOrder(node->child, node->key);
+    bool invDegree = (node->child == NULL) || invariantDegree(node);
 
     //The min pointer has the lowest key
     bool minOrder = (node == min) || (min->key < node->key);
@@ -396,7 +397,7 @@ bool FibonacciHeap<K,V>::invariantNode(Node* node) {
         } while (curNode != node->child);
     }
     
-    return heapOrder && minOrder && prevChain &&
+    return heapOrder && invDegree && minOrder && prevChain &&
            nextChain && childChain && childListChain;
 }
 
@@ -419,6 +420,19 @@ bool FibonacciHeap<K,V>::invariantHeapOrder(Node* node, K key) {
     } while (curNode != node);
 
     return heapOrder;
+}
+
+template <typename K, typename V>
+bool FibonacciHeap<K,V>::invariantDegree(Node* node) {
+    Node* curNode = node->child;
+    unsigned int listCount = 0;
+
+    do {
+        listCount++;
+        curNode = curNode->next;
+    } while (curNode != node->child);
+
+    return node->degree == listCount;
 }
 
 template <typename K, typename V>
