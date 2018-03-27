@@ -544,6 +544,10 @@ void FibonacciHeap<K,V>::dump(string dumpName) {
 
         if (node == min) {
             graphFile << node->key << " [shape=record, fillcolor=\"0.650 0.200 1.000\", style=filled,";
+
+        } else if (node->marked) {
+            graphFile << node->key << " [shape=record, fillcolor=\"#EEC591\", style=filled,";
+
         } else {
             graphFile << node->key << " [shape=record,";
         }
