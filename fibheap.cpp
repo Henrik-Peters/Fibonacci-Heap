@@ -392,7 +392,7 @@ bool FibonacciHeap<K,V>::invariantNode(Node* node) {
     bool invDegree = (node->child == NULL) || invariantDegree(node);
 
     //The min pointer has the lowest key
-    bool minOrder = (node == min) || (min->key < node->key);
+    bool minOrder = (node == min) || (min->key <= node->key);
 
     //Chaining of the list
     bool prevChain = node->next->prev == node;
@@ -478,10 +478,6 @@ bool FibonacciHeap<K,V>::normalized(Node* node) {
 
         if (nodeMap[curNode->degree] > 1) {
             uniqueDegrees = false;
-        }
-
-        if (curNode->child != NULL) {
-            uniqueDegrees &= normalized(curNode->child);
         }
 
         curNode = curNode->next;
