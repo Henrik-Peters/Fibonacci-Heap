@@ -152,9 +152,13 @@ V FibonacciHeap<K,V>::extractMin() {
                 Node* node = curNode;
                 curNode = curNode->next;
 
-                //Append the node to the rootlist
-                appendNode(node);
-
+                //Add the node to the rootlist
+                if (rootlist == NULL) {
+                    rootlist = node;
+                } else {
+                    appendNode(node);
+                }
+                
             } while (curNode != minChild);
         }
 
