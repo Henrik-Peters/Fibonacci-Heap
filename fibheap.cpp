@@ -158,7 +158,7 @@ V FibonacciHeap<K,V>::extractMin() {
                 } else {
                     appendNode(node);
                 }
-                
+
             } while (curNode != minChild);
         }
 
@@ -274,7 +274,7 @@ void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
         }
 
         //Done when the node is in the rootlist or the parent still has a lower key
-        if (node->parent == NULL || node->parent->key < newKey) {
+        if (node->parent == NULL || node->parent->key <= newKey) {
             #ifdef DEBUG
             assert (invariant());
             #endif
@@ -284,13 +284,14 @@ void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
         //Repair the heap order
 
         do {
-            //Cascading cuts
+            //Cascading node cuts
             Node* oldParent = node->parent;
             cut(node);
             node = oldParent;
 
         } while (node->marked && node->parent != NULL);
 
+        //Mark the child lost
         if (node->parent != NULL) {
             node->marked = true;
         }
@@ -306,6 +307,15 @@ void FibonacciHeap<K,V>::cut(Node* node) {
     if (node->parent != NULL) {
         //Move node to the rootlist
         node->parent->degree--;
+
+        //Update the child pointer
+        if (node->parent->degree == 0) {
+            node->parent->child = NULL;
+        } else {
+            node->parent->child = node->next;
+        }
+
+        //Nodes in the rootlist have no parent
         node->parent = NULL;
 
         //Remove node from its list
