@@ -142,6 +142,125 @@ int main() {
 
             delete h;
             TestPassed;
+        }},
+        {"Decrease key in the rootlist", []() {
+            FibHeap* h = new FibHeap();
+            
+            h->insert(4, 'B');
+            h->insert(6, 'C');
+            h->insert(2, 'A');
+            h->insert(8, 'D');
+            h->insert(9, 'F');
+            h->insert(7, 'E');
+
+            AssertEquals('A', h->extractMin());
+
+            h->decreaseKey('E', 5);
+
+            AssertEquals('B', h->extractMin());
+            AssertEquals('E', h->extractMin());
+
+            delete h;
+            TestPassed;
+        }},
+        {"Decrease key with parent and single childlist", []() {
+            FibHeap* h = new FibHeap();
+            char c = 'A';
+
+            for (int i = 1; i < 27; i++, c++) {
+                h->insert((i == 7 ? 99 : i), c);
+                if (c >= 'Z') {
+                    c = 'A' - 1;
+                }
+            }
+
+            AssertEquals('A', h->extractMin());
+            AssertEquals('B', h->extractMin());
+            AssertEquals('C', h->extractMin());
+            
+            h->decreaseKey('I', 7);
+
+            AssertEquals('D', h->extractMin());
+            AssertEquals('E', h->extractMin());
+            AssertEquals('F', h->extractMin());
+            AssertEquals('I', h->extractMin());
+
+            delete h;
+            TestPassed;
+        }},
+        {"Decrease key with parent and childlist", []() {
+            FibHeap* h = new FibHeap();
+            char c = 'A';
+
+            for (int i = 1; i < 27; i++, c++) {
+                h->insert(i, c);
+                if (c >= 'Z') {
+                    c = 'A' - 1;
+                }
+            }
+
+            AssertEquals('A', h->extractMin());
+            AssertEquals('B', h->extractMin());
+            AssertEquals('C', h->extractMin());
+
+            h->decreaseKey('K', 3);
+            AssertEquals('K', h->extractMin());
+
+            delete h;
+            TestPassed;
+        }},
+        {"Decrease key with marked parent", []() {
+            FibHeap* h = new FibHeap();
+            char c = 'A';
+
+            for (int i = 1; i < 27; i++, c++) {
+                h->insert(2 * i, c);
+                if (c >= 'Z') {
+                    c = 'A' - 1;
+                }
+            }
+
+            AssertEquals('A', h->extractMin());
+
+            h->decreaseKey('W', 5);
+            h->decreaseKey('X', 7);
+
+            AssertEquals('B', h->extractMin());
+            AssertEquals('W', h->extractMin());
+            AssertEquals('C', h->extractMin());
+            AssertEquals('X', h->extractMin());
+
+            delete h;
+            TestPassed;
+        }},
+        {"Decrease key with two marked parents", []() {
+            FibHeap* h = new FibHeap();
+            char c = 'a';
+
+            for (int i = 1; i < 40; i++, c++) {
+                h->insert(2 * i, c);
+                if (c >= 'z') {
+                    c = 'A' - 1;
+                }
+            }
+
+            AssertEquals('a', h->extractMin());
+
+            h->decreaseKey('z', 7);
+            h->decreaseKey('x', 5);
+
+            //Final decreaseKey with two marked parents
+            h->decreaseKey('w', 9);
+
+            AssertEquals('b', h->extractMin());
+            AssertEquals('x', h->extractMin());
+            AssertEquals('c', h->extractMin());
+            AssertEquals('z', h->extractMin());
+            AssertEquals('d', h->extractMin());
+            AssertEquals('w', h->extractMin());
+            
+            delete h;
+            TestPassed;
         }}
     };
 
