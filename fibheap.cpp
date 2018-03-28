@@ -493,7 +493,7 @@ void FibonacciHeap<K,V>::dump(string dumpName) {
     graphFile.open("dump/" + dumpName + ".gv");
 
     graphFile << "digraph G {" << endl;
-    graphFile << "node [style=filled];" << endl;
+    graphFile << "node [style=filled, fontname = \"arial\"];" << endl;
     graphFile << "graph [pad=\"0.1\", nodesep=\"1\", ranksep=\"1.5\"];" << endl;
 
     int maxDepth = 0;
