@@ -71,9 +71,7 @@ int main() {
             h->insert(1, 'A');
             AssertFalse(h->isEmpty());
 
-            char min = h->extractMin();
-
-            AssertEquals('A', min);
+            AssertEquals('A', h->extractMin());
             AssertTrue(h->isEmpty());
             delete h;
             TestPassed;
@@ -86,9 +84,7 @@ int main() {
             h->insert(1, 'A');
             h->insert(4, 'D');
 
-            char min = h->extractMin();
-
-            AssertEquals('A', min);
+            AssertEquals('A', h->extractMin());
             delete h;
             TestPassed;
         }},
@@ -100,15 +96,13 @@ int main() {
             h->insert(1, 'A');
             h->insert(4, 'D');
 
-            char min1 = h->extractMin();
-            char min2 = h->extractMin();
+            AssertEquals('A', h->extractMin());
+            AssertEquals('B', h->extractMin());
 
-            AssertEquals('A', min1);
-            AssertEquals('B', min2);
             delete h;
             TestPassed;
         }},
-        {"Test", []() {
+        {"Consolidate with existing tree", []() {
             FibHeap* h = new FibHeap();
             
             h->insert(2, 'B');
@@ -118,12 +112,33 @@ int main() {
             h->insert(6, 'F');
             h->insert(5, 'E');
 
-            char min1 = h->extractMin();
+            AssertEquals('A', h->extractMin());
+            AssertEquals('B', h->extractMin());
 
-            h->dump();
+            delete h;
+            TestPassed;
+        }},
+        {"Consolidate with tree list", []() {
+            FibHeap* h = new FibHeap();
+            
+            h->insert(2, 'B');
+            h->insert(3, 'C');
+            h->insert(1, 'A');
+            h->insert(4, 'D');
+            h->insert(6, 'F');
+            h->insert(5, 'E');
+            h->insert(7, 'G');
+            h->insert(8, 'H');
+            h->insert(9, 'I');
+            h->insert(10, 'J');
+            h->insert(11, 'K');
+            h->insert(12, 'L');
+            h->insert(13, 'M');
+            h->insert(14, 'N');
+            h->insert(15, 'O');
 
-            //char min1 = h->extractMin();
-            //char min2 = h->extractMin();
+            AssertEquals('A', h->extractMin());
+            AssertEquals('B', h->extractMin());
 
             delete h;
             TestPassed;
