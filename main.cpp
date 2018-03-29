@@ -261,6 +261,60 @@ int main() {
             
             delete h;
             TestPassed;
+        }},
+        {"Remove with single element", []() {
+            FibHeap* h = new FibHeap();
+
+            h->insert(5, 'A');
+            h->remove('A');
+
+            AssertTrue(h->isEmpty());
+
+            delete h;
+            TestPassed;
+        }},
+        {"Remove with 10 elements", []() {
+            FibHeap* h = new FibHeap();
+            char c = 'A';
+
+            for (int i = 1; i < 27; i++, c++) {
+                h->insert(i, c);
+                if (c >= 'Z') {
+                    c = 'A' - 1;
+                }
+            }
+
+            h->remove('B');
+            h->remove('F');
+            h->remove('K');
+            h->remove('O');
+            h->remove('C');
+            h->remove('E');
+            h->remove('J');
+            h->remove('R');
+            h->remove('Q');
+            h->remove('T');
+
+            AssertEquals('A', h->extractMin());
+            AssertEquals('D', h->extractMin());
+            AssertEquals('G', h->extractMin());
+            AssertEquals('H', h->extractMin());
+            AssertEquals('I', h->extractMin());
+            AssertEquals('L', h->extractMin());
+            AssertEquals('M', h->extractMin());
+            AssertEquals('N', h->extractMin());
+            AssertEquals('P', h->extractMin());
+            AssertEquals('S', h->extractMin());
+            AssertEquals('U', h->extractMin());
+            AssertEquals('V', h->extractMin());
+            AssertEquals('W', h->extractMin());
+            AssertEquals('X', h->extractMin());
+            AssertEquals('Y', h->extractMin());
+            AssertEquals('Z', h->extractMin());
+            AssertTrue(h->isEmpty());
+
+            delete h;
+            TestPassed;
         }}
     };
 
