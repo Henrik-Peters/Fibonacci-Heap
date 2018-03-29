@@ -274,26 +274,21 @@ bool FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
         }
 
         //Done when the node is in the rootlist or the parent still has a lower key
-        if (node->parent == NULL || node->parent->key <= newKey) {
-            #ifdef DEBUG
-            assert (invariant());
-            #endif
-            return true;
-        }
+        if (node->parent != NULL && node->parent->key > newKey) {
+            //Repair the heap order
 
-        //Repair the heap order
+            do {
+                //Cascading node cuts
+                Node* oldParent = node->parent;
+                cut(node);
+                node = oldParent;
 
-        do {
-            //Cascading node cuts
-            Node* oldParent = node->parent;
-            cut(node);
-            node = oldParent;
+            } while (node->marked && node->parent != NULL);
 
-        } while (node->marked && node->parent != NULL);
-
-        //Mark the child lost
-        if (node->parent != NULL) {
-            node->marked = true;
+            //Mark the child lost
+            if (node->parent != NULL) {
+                node->marked = true;
+            }
         }
 
         #ifdef DEBUG
