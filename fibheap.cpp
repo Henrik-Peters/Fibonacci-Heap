@@ -351,6 +351,12 @@ typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::find(Node* list, V value)
     return NULL;
 }
 
+template <typename K, typename V>
+void FibonacciHeap<K,V>::remove(V value) {
+    decreaseKey(value, min->key - (K)1);
+    extractMin();
+}
+
 #ifdef DEBUG
 template <typename K, typename V>
 bool FibonacciHeap<K,V>::invariant() {

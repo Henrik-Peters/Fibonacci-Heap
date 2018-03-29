@@ -58,6 +58,7 @@ class FibonacciHeap final {
         V extractMin();
 
         void decreaseKey(V value, K newKey);
+        void remove(V value);
 
         #ifdef DEBUG
         bool invariant();
