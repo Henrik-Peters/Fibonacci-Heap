@@ -155,6 +155,8 @@ V FibonacciHeap<K,V>::extractMin() {
                 //Add the node to the rootlist
                 if (rootlist == NULL) {
                     rootlist = node;
+                    rootlist->next = rootlist;
+                    rootlist->prev = rootlist;
                 } else {
                     appendNode(node);
                 }
