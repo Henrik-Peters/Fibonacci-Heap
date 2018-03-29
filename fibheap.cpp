@@ -261,7 +261,7 @@ typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::link(Node* a, Node* b) {
 }
 
 template <typename K, typename V>
-void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
+bool FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
     Node* node = find(rootlist, value);
 
     //Check that the node exists and the new key is smaller
@@ -278,7 +278,7 @@ void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
             #ifdef DEBUG
             assert (invariant());
             #endif
-            return;
+            return true;
         }
 
         //Repair the heap order
@@ -299,6 +299,10 @@ void FibonacciHeap<K,V>::decreaseKey(V value, K newKey) {
         #ifdef DEBUG
         assert (invariant());
         #endif
+
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -352,9 +356,14 @@ typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::find(Node* list, V value)
 }
 
 template <typename K, typename V>
-void FibonacciHeap<K,V>::remove(V value) {
-    decreaseKey(value, min->key - (K)1);
-    extractMin();
+bool FibonacciHeap<K,V>::remove(V value) {
+    //Decrease the key of the target node to become the new min node
+    if (decreaseKey(value, min->key - (K)1)) {
+        extractMin();
+        return true;
+    }
+
+    return false;
 }
 
 #ifdef DEBUG
