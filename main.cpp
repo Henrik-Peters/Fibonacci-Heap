@@ -138,13 +138,10 @@ bool TestQueue::remove(int value) {
     }
 }
 
-bool randomTest(unsigned int inserts, unsigned int extracts, unsigned int seed) {
+bool randomTest(unsigned int inserts, unsigned int extracts, int p, unsigned int seed) {
     TestQueue testQueue;
     FibInt* h = new FibInt();
     srand(seed);
-
-    //Insert probability
-    int p = 75;
 
     //Number of elements in the queue
     unsigned int count = 0;
@@ -450,8 +447,20 @@ int main() {
             delete h;
             TestPassed;
         }},
+        {"Random with 10 elements", []() {
+            return randomTest(10, 10, 90, 314215183);
+        }},
         {"Random with 100 elements", []() {
-            return randomTest(100, 100, 917114197);
+            return randomTest(100, 100, 75, 917114197);
+        }},
+        {"Random with 1000 elements", []() {
+            return randomTest(1000, 1000, 65, 571381511);
+        }},
+        {"Random with 2000 elements", []() {
+            return randomTest(2000, 2000, 55, 462969643);
+        }},
+        {"Random with 5000 elements", []() {
+            return randomTest(5000, 5000, 75, 493825932);
         }}
     };
 
