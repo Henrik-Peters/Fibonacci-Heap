@@ -172,7 +172,10 @@ V FibonacciHeap<K,V>::extractMin() {
 template <typename K, typename V>
 void FibonacciHeap<K,V>::consolidate() {
     //Empty heap or single node
-    if (nodeCount <= 1) return;
+    if (nodeCount <= 1) {
+        min = rootlist;
+        return;
+    }
 
     unsigned int maxTrees = 2 * log2(nodeCount);
     Node* trees[maxTrees] = {NULL};
