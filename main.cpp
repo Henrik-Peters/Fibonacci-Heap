@@ -6,6 +6,9 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include <vector>
+#include <numeric>
+#include <limits>
 
 #ifndef DEBUG
 #define DEBUG
@@ -15,6 +18,7 @@
 using namespace std;
 
 typedef FibonacciHeap<int,char> FibHeap;
+typedef FibonacciHeap<int,int> FibInt;
 
 #define TestPassed {return true;}
 #define AssertEquals(exp, act) ({\
@@ -61,6 +65,136 @@ Test::Test(string description, TestFunc test) {
 
 void Test::run() {
     this->result = this->test() ? SUCCESS : FAILED;
+}
+
+//Test helper functions
+class TestQueue {
+    private:
+        list<pair<int,int>> l;
+
+    public:
+        bool isEmpty();
+        void insert(int key, int value);
+        int extractMin();
+
+        bool decreaseKey(int value, int newKey);
+        bool remove(int value);
+};
+
+bool TestQueue::isEmpty() {
+    return l.empty();
+}
+
+void TestQueue::insert(int key, int value) {
+    l.push_front(make_pair(key,value));
+}
+
+int TestQueue::extractMin() {
+    if (isEmpty()) {
+        assert(false);
+
+    } else {
+        pair<int,int> min = l.front();
+
+        for (auto const& p: l) {
+            if (p.first < min.first) {
+                min = p;
+            }
+        }
+
+        l.remove(min);
+        return min.second;
+    }
+}
+
+bool TestQueue::decreaseKey(int value, int newKey) {
+    bool decreasedKey = false;
+
+    for (list<pair<int,int>>::iterator it = l.begin(); it != l.end(); ++it) {
+        if (it->first == value && newKey < it->first) {
+            *it = make_pair(newKey, it->second);
+            decreasedKey = true;
+        }
+    }
+
+    return decreasedKey;
+}
+
+bool TestQueue::remove(int value) {
+    if (isEmpty()) {
+        return false;
+
+    } else {
+        pair<int,int> target;
+
+        for (auto const& p: l) {
+            if (p.second == value) {
+                target = p;
+            }
+        }
+
+        l.remove(target);
+        return true;
+    }
+}
+
+bool randomTest(unsigned int inserts, unsigned int extracts, unsigned int seed) {
+    TestQueue testQueue;
+    FibInt* h = new FibInt();
+    srand(seed);
+
+    //Insert probability
+    int p = 75;
+
+    //Number of elements in the queue
+    unsigned int count = 0;
+
+    //Insert operations already performed
+    unsigned int insertsDone = 0;
+    unsigned int extractsDone = 0;
+
+    //Max random number
+    int maxInt = numeric_limits<int>::max();
+
+    //Generate the distinct keys and values
+    vector<int> items(2 * inserts);
+    iota(items.begin(), items.end(), 0);
+    random_shuffle(items.begin(), items.end());
+    int curItem = 0;
+
+    while (insertsDone < inserts || extractsDone < extracts) {
+        int r = (rand() % 100);
+        //smallest r: 0
+        //highest  r: 99
+
+        if (r < p || count == 0) {
+            //Insert
+            int key = items.at(curItem++);
+            int val = items.at(curItem++);
+
+            h->insert(key, val);
+            testQueue.insert(key, val);
+            insertsDone++;
+            count++;
+
+            if (insertsDone == inserts) {
+                p = -1;
+            }
+
+        } else {
+            //Extract
+            AssertEquals(testQueue.extractMin(), h->extractMin());
+            extractsDone++;
+            count--;
+        }
+    }
+
+    if (inserts == extracts) {
+        AssertTrue(h->isEmpty());
+        AssertTrue(testQueue.isEmpty());
+    }
+
+    TestPassed;
 }
 
 int main() {
@@ -315,6 +449,9 @@ int main() {
 
             delete h;
             TestPassed;
+        }},
+        {"Random with 100 elements", []() {
+            return randomTest(100, 100, 917114197);
         }}
     };
 

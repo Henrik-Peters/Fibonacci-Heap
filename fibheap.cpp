@@ -608,4 +608,5 @@ void FibonacciHeap<K,V>::dumpNode(list<pair<Node*,int>>* nodeList, Node* node, i
 }
 #endif
 
-template class FibonacciHeap<int, char>;
+template class FibonacciHeap<int,char>;
+template class FibonacciHeap<int,int>;
