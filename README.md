@@ -38,7 +38,9 @@ performance.
 ## Visualization
 The concrete situation of the data structure can be visualized with the dump function. The dump will generate a graph
 and png file with the `Graphviz`-Tool. This can be useful for a better understanding of the data structure and for 
-debugging purposes.
+debugging purposes. Example of the Fibonacci heap visualization:
+
+![Fibheap-Dump-Example](https://raw.githubusercontent.com/wiki/Henrik-Peters/Fibonacci-Heap/images/fibheap-example.png)
 
 ## Generic types
 This implementation allows using arbitrary types for the key-value pair. The key type has to provide the less and greater
