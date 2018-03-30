@@ -447,6 +447,29 @@ int main() {
             delete h;
             TestPassed;
         }},
+        {"Copy constructor test", []() {
+            FibHeap h;
+
+            h.insert(3, 'A');
+            h.insert(4, 'B');
+            h.insert(5, 'C');
+
+            FibHeap h3 = h;
+            AssertEquals('A', h3.extractMin());
+            AssertEquals('B', h3.extractMin());
+            AssertEquals('C', h3.extractMin());
+
+            AssertEquals('A', h.extractMin());
+            AssertEquals('B', h.extractMin());
+            AssertEquals('C', h.extractMin());
+
+            h.insert(7, 'D');
+            AssertTrue(h3.isEmpty());
+
+            AssertEquals('D', h.extractMin());
+            AssertTrue(h.isEmpty());
+            TestPassed;
+        }},
         {"Random with 10 elements", []() {
             return randomTest(10, 10, 90, 314215183);
         }},
