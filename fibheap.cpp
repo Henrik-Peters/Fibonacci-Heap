@@ -19,7 +19,33 @@ FibonacciHeap<K,V>::FibonacciHeap(const FibonacciHeap<K,V>& orig) {
 
 template <typename K, typename V>
 FibonacciHeap<K,V>::~FibonacciHeap() {
+    if (!isEmpty()) {
+        freeList(rootlist);
+    }
+}
 
+template <typename K, typename V>
+void FibonacciHeap<K,V>::freeList(Node* node) {
+    Node* iterateNode = node->next;
+
+    do {
+        Node* curNode = iterateNode;
+        iterateNode = iterateNode->next;
+
+        //Recursive list freeing
+        if (curNode->child != NULL) {
+            freeList(curNode->child);
+        }
+
+        //Prevent double freeing of lists with 1 element
+        if (curNode != node) {
+            delete curNode;
+        }
+
+    } while (iterateNode != node);
+
+    //Free the first element
+    delete node;
 }
 
 template <typename K, typename V>

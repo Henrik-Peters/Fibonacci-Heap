@@ -37,6 +37,7 @@ class FibonacciHeap final {
 
         unsigned int nodeCount;
 
+        void freeList(Node* node);
         void meldNode(Node* node);
         void consolidate();
         Node* link(Node* a, Node* b);
