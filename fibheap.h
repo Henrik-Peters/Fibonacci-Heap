@@ -37,7 +37,9 @@ class FibonacciHeap final {
 
         unsigned int nodeCount;
 
+        void insertList(Node* node);
         void freeList(Node* node);
+
         void meldNode(Node* node);
         void consolidate();
         Node* link(Node* a, Node* b);
@@ -49,9 +51,10 @@ class FibonacciHeap final {
     public:
         FibonacciHeap();
         FibonacciHeap(const FibonacciHeap<K,V>& orig);
+        FibonacciHeap<K,V>& operator=(const FibonacciHeap<K,V>& rhs);
         ~FibonacciHeap();
 
-        bool isEmpty();
+        bool isEmpty() const;
         void insert(K key, V value);
         void meld(FibonacciHeap<K,V>* other);
 

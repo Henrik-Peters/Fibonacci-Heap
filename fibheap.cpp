@@ -14,7 +14,18 @@ FibonacciHeap<K,V>::FibonacciHeap() {
 
 template <typename K, typename V>
 FibonacciHeap<K,V>::FibonacciHeap(const FibonacciHeap<K,V>& orig) {
+    rootlist = NULL;
+    min = NULL;
+    nodeCount = 0;
 
+    if (!orig.isEmpty()) {
+        insertList(orig.rootlist);
+    }
+}
+
+template <typename K, typename V>
+FibonacciHeap<K,V>& FibonacciHeap<K,V>::operator=(const FibonacciHeap<K,V>& rhs) {
+    return *this;
 }
 
 template <typename K, typename V>
@@ -49,8 +60,24 @@ void FibonacciHeap<K,V>::freeList(Node* node) {
 }
 
 template <typename K, typename V>
-bool FibonacciHeap<K,V>::isEmpty() {
+bool FibonacciHeap<K,V>::isEmpty() const {
     return rootlist == NULL;
+}
+
+template <typename K, typename V>
+void FibonacciHeap<K,V>::insertList(Node* node) {
+    Node* curNode = node;
+
+    do {
+        insert(curNode->key, curNode->value);
+
+        //Recursive list insertion
+        if (curNode->child != NULL) {
+            insertList(curNode->child);
+        }
+
+        curNode = curNode->next;
+    } while (curNode != node);
 }
 
 template <typename K, typename V>
