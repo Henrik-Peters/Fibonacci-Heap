@@ -25,6 +25,20 @@ FibonacciHeap<K,V>::FibonacciHeap(const FibonacciHeap<K,V>& orig) {
 
 template <typename K, typename V>
 FibonacciHeap<K,V>& FibonacciHeap<K,V>::operator=(const FibonacciHeap<K,V>& rhs) {
+    //Free the current nodes
+    if (!isEmpty()) {
+        freeList(rootlist);
+
+        //Set the current heap to the empty state
+        rootlist = NULL;
+        min = NULL;
+        nodeCount = 0;
+    }
+
+    if (!rhs.isEmpty()) {
+        insertList(rhs.rootlist);
+    }
+
     return *this;
 }
 

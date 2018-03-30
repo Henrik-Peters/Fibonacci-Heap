@@ -454,20 +454,44 @@ int main() {
             h.insert(4, 'B');
             h.insert(5, 'C');
 
-            FibHeap h3 = h;
-            AssertEquals('A', h3.extractMin());
-            AssertEquals('B', h3.extractMin());
-            AssertEquals('C', h3.extractMin());
+            FibHeap h2 = h;
+            AssertEquals('A', h2.extractMin());
+            AssertEquals('B', h2.extractMin());
+            AssertEquals('C', h2.extractMin());
 
             AssertEquals('A', h.extractMin());
             AssertEquals('B', h.extractMin());
             AssertEquals('C', h.extractMin());
 
             h.insert(7, 'D');
-            AssertTrue(h3.isEmpty());
+            AssertTrue(h2.isEmpty());
 
             AssertEquals('D', h.extractMin());
             AssertTrue(h.isEmpty());
+            TestPassed;
+        }},
+        {"Assignment operator test", []() {
+            FibHeap h;
+            FibHeap h2;
+
+            h.insert(3, 'A');
+            h.insert(4, 'B');
+            h.insert(5, 'C');
+
+            h2.insert(6, 'D');
+            h2.insert(7, 'E');
+
+            h2 = h;
+            AssertEquals('A', h2.extractMin());
+            AssertEquals('B', h2.extractMin());
+            AssertEquals('C', h2.extractMin());
+
+            AssertEquals('A', h.extractMin());
+            AssertEquals('B', h.extractMin());
+            AssertEquals('C', h.extractMin());
+
+            AssertTrue(h.isEmpty());
+            AssertTrue(h2.isEmpty());
             TestPassed;
         }},
         {"Random with 10 elements", []() {
