@@ -6,17 +6,20 @@
 #include "fibheap.h"
 
 template <typename K, typename V>
-FibonacciHeap<K,V>::FibonacciHeap() {
+void FibonacciHeap<K,V>::makeHeap() {
     rootlist = NULL;
     min = NULL;
     nodeCount = 0;
 }
 
 template <typename K, typename V>
+FibonacciHeap<K,V>::FibonacciHeap() {
+    makeHeap();
+}
+
+template <typename K, typename V>
 FibonacciHeap<K,V>::FibonacciHeap(const FibonacciHeap<K,V>& orig) {
-    rootlist = NULL;
-    min = NULL;
-    nodeCount = 0;
+    makeHeap();
 
     if (!orig.isEmpty()) {
         insertList(orig.rootlist);
@@ -30,9 +33,7 @@ FibonacciHeap<K,V>& FibonacciHeap<K,V>::operator=(const FibonacciHeap<K,V>& rhs)
         freeList(rootlist);
 
         //Set the current heap to the empty state
-        rootlist = NULL;
-        min = NULL;
-        nodeCount = 0;
+        makeHeap();
     }
 
     if (!rhs.isEmpty()) {
@@ -140,8 +141,7 @@ template <typename K, typename V>
 void FibonacciHeap<K,V>::meldNode(Node* node) {
     //There is no change when merging with an empty node
     if (rootlist == NULL) {
-        rootlist = node;
-        min = node;
+        rootlist = min = node;
         nodeCount = 1;
         
     } else if (node != NULL) {
@@ -214,7 +214,7 @@ V FibonacciHeap<K,V>::extractMin() {
                 curNode->marked = false;
                 curNode->parent = NULL;
 
-                //In order not to break the iteration during node prepanding
+                //In order not to break the iteration during node appending
                 //save the current node and move the iteration to the next node
                 Node* node = curNode;
                 curNode = curNode->next;
@@ -393,7 +393,7 @@ void FibonacciHeap<K,V>::cut(Node* node) {
         node->next->prev = node->prev;
         node->prev->next = node->next;
 
-        //Insert node into the rootlist
+        //Insert the node into the rootlist
         appendNode(node);
     }
 }
@@ -503,7 +503,6 @@ bool FibonacciHeap<K,V>::invariantHeapOrder(Node* node, K key) {
     bool heapOrder = true;
 
     do {
-
         if (curNode->key < key) {
             heapOrder = false;
         }

@@ -37,6 +37,7 @@ class FibonacciHeap final {
 
         unsigned int nodeCount;
 
+        inline void makeHeap();
         void insertList(Node* node);
         void freeList(Node* node);
 
