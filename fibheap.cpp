@@ -173,7 +173,7 @@ void FibonacciHeap<K,V>::appendNode(Node* node) {
 }
 
 template <typename K, typename V>
-V FibonacciHeap<K,V>::getMin() {
+V FibonacciHeap<K,V>::getMin() const {
     if (min == NULL) {
         //Empty rootlist
         return (V)0;
@@ -399,7 +399,7 @@ void FibonacciHeap<K,V>::cut(Node* node) {
 }
 
 template <typename K, typename V>
-typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::find(Node* list, V value) {
+typename FibonacciHeap<K,V>::Node* FibonacciHeap<K,V>::find(Node* list, V value) const {
     Node* curNode = list;
 
     do {

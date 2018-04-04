@@ -7,10 +7,6 @@
 #include <cmath>
 #include <cstdlib>
 
-#ifndef DEBUG
-#define DEBUG
-#endif
-
 #ifdef DEBUG
 #include <assert.h>
 #include <fstream>
@@ -46,7 +42,7 @@ class FibonacciHeap final {
         Node* link(Node* a, Node* b);
 
         inline void appendNode(Node* node);
-        Node* find(Node* list, V value);
+        Node* find(Node* list, V value) const;
         void cut(Node* node);
 
     public:
@@ -59,7 +55,7 @@ class FibonacciHeap final {
         void insert(K key, V value);
         void meld(FibonacciHeap<K,V>* other);
 
-        V getMin();
+        V getMin() const;
         V extractMin();
 
         bool decreaseKey(V value, K newKey);
