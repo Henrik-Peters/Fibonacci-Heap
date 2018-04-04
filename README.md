@@ -42,7 +42,7 @@ debugging purposes. Example of the Fibonacci heap visualization:
 
 ![Fibheap-Dump-Example](https://raw.githubusercontent.com/wiki/Henrik-Peters/Fibonacci-Heap/images/fibheap-example.png)
 
-## Operations for the empty heap
+## Empty heap operations
 The getMin and extractMin functions return a value of type V. When the heap is empty zero will be returned. It would be safer
 to return an optional but that would cost memory and performance. This implementation preferred the better performance over
 type-safety. You can call the isEmpty-check before calling getMin or extractMin to avoid a situation where no minimum exists
