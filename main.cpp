@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
-#include <limits>
 
 #ifndef DEBUG
 #define DEBUG
@@ -149,9 +148,6 @@ bool randomTest(unsigned int inserts, unsigned int extracts, int p, unsigned int
     //Insert operations already performed
     unsigned int insertsDone = 0;
     unsigned int extractsDone = 0;
-
-    //Max random number
-    int maxInt = numeric_limits<int>::max();
 
     //Generate the distinct keys and values
     vector<int> items(2 * inserts);
